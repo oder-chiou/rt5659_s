@@ -1,0 +1,296 @@
+<mixer>
+	<!-- Default Initial -->
+	<ctl name="DAC L1 Source" value="Stereo DAC Mixer"/>
+	<ctl name="DAC R1 Source" value="Stereo DAC Mixer"/>
+	<ctl name="DAC L2 Source" value="Mono DAC Mixer"/>
+	<ctl name="DAC R2 Source" value="Mono DAC Mixer"/>
+	<ctl name="ADC IF2 Data Switch" value="L/R"/>
+	<ctl name="Stereo DAC MIXL DAC L1 Switch" value="0"/>
+	<ctl name="Stereo DAC MIXL DAC L2 Switch" value="0"/>
+	<ctl name="Stereo DAC MIXL DAC R2 Switch" value="0"/>
+	<ctl name="Stereo DAC MIXR DAC R1 Switch" value="0"/>
+	<ctl name="Stereo DAC MIXR DAC L2 Switch" value="0"/>
+	<ctl name="Stereo DAC MIXR DAC R2 Switch" value="0"/>
+	<ctl name="Mono DAC MIXL DAC L1 Switch" value="0"/>
+	<ctl name="Mono DAC MIXL DAC R1 Switch" value="0"/>
+	<ctl name="Mono DAC MIXL DAC L2 Switch" value="0"/>
+	<ctl name="Mono DAC MIXR DAC R1 Switch" value="0"/>
+	<ctl name="Mono DAC MIXR DAC L2 Switch" value="0"/>
+	<ctl name="Mono DAC MIXR DAC R2 Switch" value="0"/>
+	<ctl name="Stereo1 ADC MIXL ADC1 Switch" value="0"/>
+	<ctl name="Stereo1 ADC MIXR ADC1 Switch" value="0"/>
+	<ctl name="Stereo1 ADC MIXL ADC2 Switch" value="0"/>
+	<ctl name="Stereo1 ADC MIXR ADC2 Switch" value="0"/>
+	<ctl name="Mono ADC MIXL ADC1 Switch" value="0"/>
+	<ctl name="Mono ADC MIXR ADC1 Switch" value="0"/>
+
+	<!-- Playback SPO -->
+	<ctl name="DAC L1 Mux" value="IF1 DAC1"/>
+	<ctl name="DAC R1 Mux" value="IF1 DAC1"/>
+	<ctl name="DAC1 MIXL DAC1 Switch" value="1"/>
+	<ctl name="DAC1 MIXR DAC1 Switch" value="1"/>
+	<ctl name="Mono DAC MIXL DAC L1 Switch" value="1"/>
+	<ctl name="Mono DAC MIXR DAC R1 Switch" value="1"/>
+	<ctl name="SPK MIXL DAC L2 Switch" value="1"/>
+	<ctl name="SPK MIXR DAC R2 Switch" value="1"/>
+	<ctl name="SPKVOL L Switch" value="1"/>
+	<ctl name="SPKVOL R Switch" value="1"/>
+	<ctl name="SPO L MIX SPKVOL L Switch" value="1"/>
+	<ctl name="SPO R MIX SPKVOL R Switch" value="1"/>
+	<ctl name="SPO Playback Switch" value="1"/>
+
+	<!-- Playback HPO -->
+	<ctl name="DAC L1 Mux" value="IF1 DAC1"/>
+	<ctl name="DAC R1 Mux" value="IF1 DAC1"/>
+	<ctl name="DAC1 MIXL DAC1 Switch" value="1"/>
+	<ctl name="DAC1 MIXR DAC1 Switch" value="1"/>
+	<ctl name="Stereo DAC MIXL DAC L1 Switch" value="1"/>
+	<ctl name="Stereo DAC MIXR DAC R1 Switch" value="1"/>
+	<ctl name="HPO L Playback Switch" value="1"/>
+	<ctl name="HPO R Playback Switch" value="1"/>
+
+	<!-- Record Builtin Mic -->
+	<ctl name="RECMIX1L BST3 Switch" value="1"/>
+	<ctl name="RECMIX1R BST3 Switch" value="1"/>
+	<ctl name="Stereo1 ADC Source" value="ADC1"/>
+	<ctl name="Stereo1 ADC1 Source" value="ADC"/>
+	<ctl name="Stereo1 ADC MIXL ADC1 Switch" value="1"/>
+	<ctl name="Stereo1 ADC MIXR ADC1 Switch" value="1"/>
+
+	<!-- Record Headset Mic -->
+	<ctl name="RECMIX1L BST1 Switch" value="1"/>
+	<ctl name="RECMIX1R BST1 Switch" value="1"/>
+	<ctl name="Stereo1 ADC Source" value="ADC1"/>
+	<ctl name="Stereo1 ADC1 Source" value="ADC"/>
+	<ctl name="Stereo1 ADC MIXL ADC1 Switch" value="1"/>
+	<ctl name="Stereo1 ADC MIXR ADC1 Switch" value="1"/>
+
+	<!-- VoiceCall Builtin Mic & RCV -->
+	<!-- Builtin Mic -->
+	<ctl name="RECMIX1L BST3 Switch" value="1"/>
+	<ctl name="RECMIX1R BST4 Switch" value="1"/>
+	<ctl name="Mono ADC L Mux" value="ADC1 L"/>
+	<ctl name="Mono ADC R Mux" value="ADC1 R"/>
+	<ctl name="Mono ADC L1 Mux" value="ADC"/>
+	<ctl name="Mono ADC R1 Mux" value="ADC"/>
+	<ctl name="Mono ADC MIXL ADC1 Switch" value="1"/>
+	<ctl name="Mono ADC MIXR ADC1 Switch" value="1"/>
+	<!-- RCV -->
+	<ctl name="DAC L2 Mux" value="IF2 DAC"/>
+	<ctl name="Mono DAC MIXL DAC L2 Switch" value="1"/>
+	<ctl name="Mono MIX DAC L2 Switch" value="1"/>
+	<ctl name="Mono Playback Switch" value="1"/>
+		<!-- System -->
+		<ctl name="DAC L1 Mux" value="IF1 DAC1"/>
+		<ctl name="DAC R1 Mux" value="IF1 DAC1"/>
+		<ctl name="DAC1 MIXL DAC1 Switch" value="1"/>
+		<ctl name="DAC1 MIXR DAC1 Switch" value="1"/>
+		<ctl name="Mono DAC MIXL DAC L1 Switch" value="1"/>
+		<ctl name="Mono DAC MIXL DAC R1 Switch" value="1"/>
+	<!-- Record -->
+		<!-- System -->
+		<ctl name="DAC L1 Mux" value="IF1 DAC1"/>
+		<ctl name="DAC R1 Mux" value="IF1 DAC1"/>
+		<ctl name="DAC1 MIXL DAC1 Switch" value="1"/>
+		<ctl name="DAC1 MIXR DAC1 Switch" value="1"/>
+		<ctl name="Stereo DAC MIXL DAC L1 Switch" value="1"/>
+		<ctl name="Stereo DAC MIXR DAC R1 Switch" value="1"/>
+		<!-- RCV -->
+		<ctl name="Stereo DAC MIXL DAC L2 Switch" value="1"/>
+		<ctl name="Stereo DAC MIXR DAC L2 Switch" value="1"/>
+		<ctl name="DAC MIXL Mux" value="Stereo DAC Mixer"/>
+		<ctl name="DAC MIXR Mux" value="Stereo DAC Mixer"/>
+		<ctl name="Stereo1 ADC2 Source" value="DAC MIX"/>
+		<ctl name="Stereo1 ADC MIXL ADC2 Switch" value="1"/>
+		<ctl name="Stereo1 ADC MIXR ADC2 Switch" value="1"/>
+		<!-- Builtin Mic -->
+		<ctl name="Stereo1 ADC Source" value="ADC1"/>
+		<ctl name="Stereo1 ADC1 Source" value="ADC"/>
+		<ctl name="Stereo1 ADC MIXL ADC1 Switch" value="1"/>
+		<ctl name="Stereo1 ADC MIXR ADC1 Switch" value="1"/>
+
+	<!-- VoiceCall Builtin Mic & HPO -->
+	<!-- Builtin Mic -->
+	<ctl name="RECMIX1L BST3 Switch" value="1"/>
+	<ctl name="RECMIX1R BST4 Switch" value="1"/>
+	<ctl name="Mono ADC L Mux" value="ADC1 L"/>
+	<ctl name="Mono ADC R Mux" value="ADC1 R"/>
+	<ctl name="Mono ADC L1 Mux" value="ADC"/>
+	<ctl name="Mono ADC R1 Mux" value="ADC"/>
+	<ctl name="Mono ADC MIXL ADC1 Switch" value="1"/>
+	<ctl name="Mono ADC MIXR ADC1 Switch" value="1"/>
+	<!-- HPO -->
+	<ctl name="DAC L2 Mux" value="IF2 DAC"/>
+	<ctl name="Stereo DAC MIXL DAC L2 Switch" value="1"/>
+	<ctl name="Stereo DAC MIXR DAC L2 Switch" value="1"/>
+	<ctl name="HPO L Playback Switch" value="1"/>
+	<ctl name="HPO R Playback Switch" value="1"/>
+		<!-- System -->
+		<ctl name="DAC L1 Mux" value="IF1 DAC1"/>
+		<ctl name="DAC R1 Mux" value="IF1 DAC1"/>
+		<ctl name="DAC1 MIXL DAC1 Switch" value="1"/>
+		<ctl name="DAC1 MIXR DAC1 Switch" value="1"/>
+		<ctl name="Stereo DAC MIXL DAC L1 Switch" value="1"/>
+		<ctl name="Stereo DAC MIXR DAC R1 Switch" value="1"/>
+	<!-- Record -->
+		<!-- System -->
+		<ctl name="DAC L1 Mux" value="IF1 DAC1"/>
+		<ctl name="DAC R1 Mux" value="IF1 DAC1"/>
+		<ctl name="DAC1 MIXL DAC1 Switch" value="1"/>
+		<ctl name="DAC1 MIXR DAC1 Switch" value="1"/>
+		<ctl name="Mono DAC MIXL DAC L1 Switch" value="1"/>
+		<ctl name="Mono DAC MIXR DAC R1 Switch" value="1"/>
+		<!-- HPO -->
+		<ctl name="Mono DAC MIXL DAC L2 Switch" value="1"/>
+		<ctl name="Mono DAC MIXR DAC L2 Switch" value="1"/>
+		<ctl name="DAC MIXL Mux" value="Mono DAC Mixer"/>
+		<ctl name="DAC MIXR Mux" value="Mono DAC Mixer"/>
+		<ctl name="Stereo1 ADC2 Source" value="DAC MIX"/>
+		<ctl name="Stereo1 ADC MIXL ADC2 Switch" value="1"/>
+		<ctl name="Stereo1 ADC MIXR ADC2 Switch" value="1"/>
+		<!-- Builtin Mic -->
+		<ctl name="Stereo1 ADC Source" value="ADC1"/>
+		<ctl name="Stereo1 ADC1 Source" value="ADC"/>
+		<ctl name="Stereo1 ADC MIXL ADC1 Switch" value="1"/>
+		<ctl name="Stereo1 ADC MIXR ADC1 Switch" value="1"/>
+
+	<!-- VoiceCall Builtin Mic & SPO -->
+	<!-- Builtin Mic -->
+	<ctl name="RECMIX1L BST3 Switch" value="1"/>
+	<ctl name="RECMIX1R BST3 Switch" value="1"/>
+	<ctl name="Mono ADC L Mux" value="ADC1 L"/>
+	<ctl name="Mono ADC R Mux" value="ADC1 R"/>
+	<ctl name="Mono ADC L1 Mux" value="ADC"/>
+	<ctl name="Mono ADC R1 Mux" value="ADC"/>
+	<ctl name="Mono ADC MIXL ADC1 Switch" value="1"/>
+	<ctl name="Mono ADC MIXR ADC1 Switch" value="1"/>
+	<!-- SPO -->
+	<ctl name="DAC L2 Mux" value="IF2 DAC"/>
+	<ctl name="Mono DAC MIXL DAC L2 Switch" value="1"/>
+	<ctl name="Mono DAC MIXR DAC L2 Switch" value="1"/>
+	<ctl name="SPK MIXL DAC L2 Switch" value="1"/>
+	<ctl name="SPK MIXR DAC R2 Switch" value="1"/>
+	<ctl name="SPKVOL L Switch" value="1"/>
+	<ctl name="SPKVOL R Switch" value="1"/>
+	<ctl name="SPO L MIX SPKVOL L Switch" value="1"/>
+	<ctl name="SPO R MIX SPKVOL R Switch" value="1"/>
+	<ctl name="SPO Playback Switch" value="1"/>
+		<!-- System -->
+		<ctl name="DAC L1 Mux" value="IF1 DAC1"/>
+		<ctl name="DAC R1 Mux" value="IF1 DAC1"/>
+		<ctl name="DAC1 MIXL DAC1 Switch" value="1"/>
+		<ctl name="DAC1 MIXR DAC1 Switch" value="1"/>
+		<ctl name="Mono DAC MIXL DAC L1 Switch" value="1"/>
+		<ctl name="Mono DAC MIXR DAC R1 Switch" value="1"/>
+	<!-- Record -->
+		<!-- System -->
+		<ctl name="DAC L1 Mux" value="IF1 DAC1"/>
+		<ctl name="DAC R1 Mux" value="IF1 DAC1"/>
+		<ctl name="DAC1 MIXL DAC1 Switch" value="1"/>
+		<ctl name="DAC1 MIXR DAC1 Switch" value="1"/>
+		<ctl name="Stereo DAC MIXL DAC L1 Switch" value="1"/>
+		<ctl name="Stereo DAC MIXR DAC R1 Switch" value="1"/>
+		<!-- SPO -->
+		<ctl name="Stereo DAC MIXL DAC L2 Switch" value="1"/>
+		<ctl name="Stereo DAC MIXR DAC L2 Switch" value="1"/>
+		<ctl name="DAC MIXL Mux" value="Stereo DAC Mixer"/>
+		<ctl name="DAC MIXR Mux" value="Stereo DAC Mixer"/>
+		<ctl name="Stereo1 ADC2 Source" value="DAC MIX"/>
+		<ctl name="Stereo1 ADC MIXL ADC2 Switch" value="1"/>
+		<ctl name="Stereo1 ADC MIXR ADC2 Switch" value="1"/>
+		<!-- Builtin Mic -->
+		<ctl name="Stereo1 ADC Source" value="ADC1"/>
+		<ctl name="Stereo1 ADC1 Source" value="ADC"/>
+		<ctl name="Stereo1 ADC MIXL ADC1 Switch" value="1"/>
+		<ctl name="Stereo1 ADC MIXR ADC1 Switch" value="1"/>
+
+	<!-- VoiceCall Headset Mic & HPO -->
+	<!-- Headset Mic -->
+	<ctl name="RECMIX1L BST1 Switch" value="1"/>
+	<ctl name="RECMIX1R BST1 Switch" value="1"/>
+	<ctl name="Mono ADC L Mux" value="ADC1 L"/>
+	<ctl name="Mono ADC R Mux" value="ADC1 R"/>
+	<ctl name="Mono ADC L1 Mux" value="ADC"/>
+	<ctl name="Mono ADC R1 Mux" value="ADC"/>
+	<ctl name="Mono ADC MIXL ADC1 Switch" value="1"/>
+	<ctl name="Mono ADC MIXR ADC1 Switch" value="1"/>
+	<!-- HPO -->
+	<ctl name="DAC L2 Mux" value="IF2 DAC"/>
+	<ctl name="Stereo DAC MIXL DAC L2 Switch" value="1"/>
+	<ctl name="Stereo DAC MIXR DAC L2 Switch" value="1"/>
+	<ctl name="HPO L Playback Switch" value="1"/>
+	<ctl name="HPO R Playback Switch" value="1"/>
+		<!-- System -->
+		<ctl name="DAC L1 Mux" value="IF1 DAC1"/>
+		<ctl name="DAC R1 Mux" value="IF1 DAC1"/>
+		<ctl name="DAC1 MIXL DAC1 Switch" value="1"/>
+		<ctl name="DAC1 MIXR DAC1 Switch" value="1"/>
+		<ctl name="Stereo DAC MIXL DAC L1 Switch" value="1"/>
+		<ctl name="Stereo DAC MIXR DAC R1 Switch" value="1"/>
+	<!-- Record -->
+		<!-- System -->
+		<ctl name="DAC L1 Mux" value="IF1 DAC1"/>
+		<ctl name="DAC R1 Mux" value="IF1 DAC1"/>
+		<ctl name="DAC1 MIXL DAC1 Switch" value="1"/>
+		<ctl name="DAC1 MIXR DAC1 Switch" value="1"/>
+		<ctl name="Mono DAC MIXL DAC L1 Switch" value="1"/>
+		<ctl name="Mono DAC MIXR DAC R1 Switch" value="1"/>
+		<!-- HPO -->
+		<ctl name="Mono DAC MIXL DAC L2 Switch" value="1"/>
+		<ctl name="Mono DAC MIXR DAC L2 Switch" value="1"/>
+		<ctl name="DAC MIXL Mux" value="Mono DAC Mixer"/>
+		<ctl name="DAC MIXR Mux" value="Mono DAC Mixer"/>
+		<ctl name="Stereo1 ADC2 Source" value="DAC MIX"/>
+		<ctl name="Stereo1 ADC MIXL ADC2 Switch" value="1"/>
+		<ctl name="Stereo1 ADC MIXR ADC2 Switch" value="1"/>
+		<!-- Builtin Mic -->
+		<ctl name="Stereo1 ADC Source" value="ADC1"/>
+		<ctl name="Stereo1 ADC1 Source" value="ADC"/>
+		<ctl name="Stereo1 ADC MIXL ADC1 Switch" value="1"/>
+		<ctl name="Stereo1 ADC MIXR ADC1 Switch" value="1"/>
+
+	<!-- VoiceCall Bluetooth -->
+	<!-- CP to BT -->
+	<ctl name="DAC L2 Mux" value="IF2 DAC"/>
+	<ctl name="Mono DAC MIXL DAC L2 Switch" value="1"/>
+	<ctl name="Mono ADC L1 Mux" value="Mono DAC MIXL"/>
+	<ctl name="Mono ADC MIXL ADC1 Switch" value="1"/>
+	<ctl name="IF3 ADC Mux" value="IF_ADC2"/>
+	<ctl name="ADC IF3 Data Switch" value="L/L"/>
+		<!-- System -->
+		<ctl name="DAC L1 Mux" value="IF1 DAC1"/>
+		<ctl name="DAC R1 Mux" value="IF1 DAC1"/>
+		<ctl name="DAC1 MIXL DAC1 Switch" value="1"/>
+		<ctl name="DAC1 MIXR DAC1 Switch" value="1"/>
+		<ctl name="Mono DAC MIXL DAC L1 Switch" value="1"/>
+		<ctl name="Mono DAC MIXL DAC R1 Switch" value="1"/>
+		<!-- RCV -->
+		<ctl name="Mono MIX DAC L2 Switch" value="1"/>
+		<ctl name="Mono Playback Switch" value="1"/>
+	<!-- BT to CP -->
+	<ctl name="DAC IF3 Data Switch" value="L/L"/>
+	<ctl name="DAC R2 Mux" value="IF3 DAC"/>
+	<ctl name="Mono DAC MIXR DAC R2 Switch" value="1"/>
+	<ctl name="Mono ADC R1 Mux" value="Mono DAC MIXR"/>
+	<ctl name="Mono ADC MIXR ADC1 Switch" value="1"/>
+	<ctl name="ADC IF2 Data Switch" value="R/R"/>
+	<!-- Record -->
+		<!-- System -->
+		<ctl name="DAC L1 Mux" value="IF1 DAC1"/>
+		<ctl name="DAC R1 Mux" value="IF1 DAC1"/>
+		<ctl name="DAC1 MIXL DAC1 Switch" value="1"/>
+		<ctl name="DAC1 MIXR DAC1 Switch" value="1"/>
+		<ctl name="Stereo DAC MIXL DAC L1 Switch" value="1"/>
+		<ctl name="Stereo DAC MIXR DAC R1 Switch" value="1"/>
+		<!-- CP to BT -->
+		<ctl name="Stereo DAC MIXL DAC L2 Switch" value="1"/>
+		<ctl name="Stereo DAC MIXR DAC L2 Switch" value="1"/>
+		<!-- BT to CP -->
+		<ctl name="Stereo DAC MIXL DAC R2 Switch" value="1"/>
+		<ctl name="Stereo DAC MIXR DAC R2 Switch" value="1"/>
+		<ctl name="DAC MIXL Mux" value="Stereo DAC Mixer"/>
+		<ctl name="DAC MIXR Mux" value="Stereo DAC Mixer"/>
+		<ctl name="Stereo1 ADC2 Source" value="DAC MIX"/>
+		<ctl name="Stereo1 ADC MIXL ADC2 Switch" value="1"/>
+		<ctl name="Stereo1 ADC MIXR ADC2 Switch" value="1"/>
+</mixer>
