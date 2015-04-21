@@ -2557,10 +2557,33 @@ static int rt5659_i2s_event(struct snd_soc_dapm_widget *w,
 	struct snd_kcontrol *kcontrol, int event)
 {
 	struct snd_soc_codec *codec = w->codec;
+	struct rt5659_priv *rt5659 = snd_soc_codec_get_drvdata(codec);
 
 	pr_debug("%s\n", __FUNCTION__);
 
 	switch (event) {
+	case SND_SOC_DAPM_PRE_PMU:
+		switch (w->shift) {
+		case RT5659_PWR_I2S1_BIT:
+			if (rt5659->master[RT5659_AIF1])
+				snd_soc_update_bits(codec, RT5659_I2S1_SDP,
+					RT5659_I2S_MS_MASK , RT5659_I2S_MS_M);
+			break;
+		case RT5659_PWR_I2S2_BIT:
+			if (rt5659->master[RT5659_AIF2])
+				snd_soc_update_bits(codec, RT5659_I2S2_SDP,
+					RT5659_I2S_MS_MASK , RT5659_I2S_MS_M);
+			break;
+		case RT5659_PWR_I2S3_BIT:
+			if (rt5659->master[RT5659_AIF3])
+				snd_soc_update_bits(codec, RT5659_I2S3_SDP,
+					RT5659_I2S_MS_MASK , RT5659_I2S_MS_M);
+			break;
+		default:
+			break;
+		}
+		break;
+
 	case SND_SOC_DAPM_POST_PMD:
 		switch (w->shift) {
 		case RT5659_PWR_I2S1_BIT:
@@ -2774,7 +2797,7 @@ static const struct snd_soc_dapm_widget rt5659_dapm_widgets[] = {
 
 	/* Digital Interface */
 	SND_SOC_DAPM_SUPPLY("I2S1", RT5659_PWR_DIG_1, RT5659_PWR_I2S1_BIT, 0,
-		rt5659_i2s_event, SND_SOC_DAPM_POST_PMD),
+		rt5659_i2s_event, SND_SOC_DAPM_PRE_PMU | SND_SOC_DAPM_POST_PMD),
 	SND_SOC_DAPM_PGA("IF1 DAC1", SND_SOC_NOPM, 0, 0, NULL, 0),
 	SND_SOC_DAPM_PGA("IF1 DAC2", SND_SOC_NOPM, 0, 0, NULL, 0),
 	SND_SOC_DAPM_PGA("IF1 DAC1 L", SND_SOC_NOPM, 0, 0, NULL, 0),
@@ -2785,7 +2808,7 @@ static const struct snd_soc_dapm_widget rt5659_dapm_widgets[] = {
 	SND_SOC_DAPM_PGA("IF1 ADC L", SND_SOC_NOPM, 0, 0, NULL, 0),
 	SND_SOC_DAPM_PGA("IF1 ADC R", SND_SOC_NOPM, 0, 0, NULL, 0),
 	SND_SOC_DAPM_SUPPLY("I2S2", RT5659_PWR_DIG_1, RT5659_PWR_I2S2_BIT, 0,
-		rt5659_i2s_event, SND_SOC_DAPM_POST_PMD),
+		rt5659_i2s_event, SND_SOC_DAPM_PRE_PMU | SND_SOC_DAPM_POST_PMD),
 	SND_SOC_DAPM_PGA("IF2 DAC", SND_SOC_NOPM, 0, 0, NULL, 0),
 	SND_SOC_DAPM_PGA("IF2 DAC L", SND_SOC_NOPM, 0, 0, NULL, 0),
 	SND_SOC_DAPM_PGA("IF2 DAC R", SND_SOC_NOPM, 0, 0, NULL, 0),
@@ -2793,7 +2816,7 @@ static const struct snd_soc_dapm_widget rt5659_dapm_widgets[] = {
 	SND_SOC_DAPM_PGA("IF2 ADC1", SND_SOC_NOPM, 0, 0, NULL, 0),
 	SND_SOC_DAPM_PGA("IF2 ADC2", SND_SOC_NOPM, 0, 0, NULL, 0),
 	SND_SOC_DAPM_SUPPLY("I2S3", RT5659_PWR_DIG_1, RT5659_PWR_I2S3_BIT, 0,
-		rt5659_i2s_event, SND_SOC_DAPM_POST_PMD),
+		rt5659_i2s_event, SND_SOC_DAPM_PRE_PMU | SND_SOC_DAPM_POST_PMD),
 	SND_SOC_DAPM_PGA("IF3 DAC", SND_SOC_NOPM, 0, 0, NULL, 0),
 	SND_SOC_DAPM_PGA("IF3 DAC L", SND_SOC_NOPM, 0, 0, NULL, 0),
 	SND_SOC_DAPM_PGA("IF3 DAC R", SND_SOC_NOPM, 0, 0, NULL, 0),
