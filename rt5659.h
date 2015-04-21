@@ -1783,6 +1783,6 @@ struct rt5659_priv {
 int rt5659_headset_detect(struct snd_soc_codec *codec, int jack_insert);
 int rt5659_button_detect(struct snd_soc_codec *codec);
 int rt5659_check_jd_status(struct snd_soc_codec *codec);
-
+int rt5659_get_jack_type(struct snd_soc_codec *codec, unsigned long action);
 
 #endif /* __RT5659_H__ */

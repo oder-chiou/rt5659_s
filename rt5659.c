@@ -36,17 +36,14 @@ module_param(dmic_power_delay, int, 0644);
 #define VERSION "0.4 alsa 1.0.25"
 
 static struct reg_default init_list[] = {
-	/*DMIC1_SDA from GPIO5*/
-	{RT5659_DMIC_CTRL_1,		0x24a8},
-	{RT5659_GPIO_CTRL_1,		0x4800},
-	/* Headset mic (IN1) */
 	{RT5659_IN1_IN2,		0x4000}, /*Set BST1 to 36dB*/
+	{RT5659_IN3_IN4,		0x4040}, /*Set BST3/4 to 36dB*/
 	/* Jack detect (JD3 to IRQ)*/
-	{RT5659_RC_CLK_CTRL,		0x9000},
-	{RT5659_GPIO_CTRL_1,		0xc800}, /*set GPIO1 to IRQ*/
+	{RT5659_RC_CLK_CTRL,		0x9800},
+	{RT5659_GPIO_CTRL_1,		0x8000}, /*set GPIO1 to IRQ*/
 	{RT5659_PWR_ANLG_2,		0x0001}, /*JD3 power on */
 	{RT5659_IRQ_CTRL_2,		0x0040}, /*JD3 detection*/
-	{RT5659_EJD_CTRL_1,		0xa880},
+	{RT5659_EJD_CTRL_1,		0x30c0},
 };
 #define RT5659_INIT_REG_LEN ARRAY_SIZE(init_list)
 
@@ -1406,6 +1403,35 @@ int rt5659_check_jd_status(struct snd_soc_codec *codec)
 }
 EXPORT_SYMBOL(rt5659_check_jd_status);
 
+int rt5659_get_jack_type(struct snd_soc_codec *codec, unsigned long action)
+{
+	struct rt5659_priv *rt5659 = snd_soc_codec_get_drvdata(codec);
+	int value;
+
+	if (action) {
+		snd_soc_dapm_force_enable_pin(&codec->dapm, "MICBIAS1");
+		snd_soc_dapm_sync(&codec->dapm);
+
+		regmap_update_bits(rt5659->regmap, RT5659_PWR_ANLG_1, 0xa200, 0xa200);	
+		regmap_update_bits(rt5659->regmap, RT5659_PWR_ANLG_2, 0x0801, 0x0801);
+
+		msleep(100);
+		regmap_read(rt5659->regmap, RT5659_GPIO_STA, &value);
+		if (value & 0x4)
+			return 1;
+
+		snd_soc_dapm_disable_pin(&codec->dapm, "MICBIAS1");
+		snd_soc_dapm_sync(&codec->dapm);
+		return 2;
+	}
+
+	snd_soc_dapm_disable_pin(&codec->dapm, "MICBIAS1");
+	snd_soc_dapm_sync(&codec->dapm);
+
+	return 0;
+}
+EXPORT_SYMBOL(rt5659_get_jack_type);
+
 static const char *rt5659_push_btn_mode[] = {
 	"Disable", "Read"
 };
@@ -2476,7 +2502,7 @@ static int set_bst3_power(struct snd_soc_dapm_widget *w,
 		break;
 
 	case SND_SOC_DAPM_PRE_PMD:
-		snd_soc_update_bits(codec, RT5659_PWR_ANLG_3,
+		snd_soc_update_bits(codec, RT5659_PWR_ANLG_2,
 			RT5659_PWR_BST3_P | RT5659_PWR_BST3, 0);
 		break;
 
@@ -2500,7 +2526,7 @@ static int set_bst4_power(struct snd_soc_dapm_widget *w,
 		break;
 
 	case SND_SOC_DAPM_PRE_PMD:
-		snd_soc_update_bits(codec, RT5659_PWR_ANLG_3,
+		snd_soc_update_bits(codec, RT5659_PWR_ANLG_2,
 			RT5659_PWR_BST4_P | RT5659_PWR_BST4, 0);
 		break;
 
@@ -2519,6 +2545,39 @@ static int set_dmic_power(struct snd_soc_dapm_widget *w,
 		pr_debug("%s\n", __FUNCTION__);
 		/*Add delay to avoid pop noise*/
 		msleep(dmic_power_delay);
+		break;
+
+	default:
+		return 0;
+	}
+
+	return 0;
+}
+static int rt5659_i2s_event(struct snd_soc_dapm_widget *w,
+	struct snd_kcontrol *kcontrol, int event)
+{
+	struct snd_soc_codec *codec = w->codec;
+
+	pr_debug("%s\n", __FUNCTION__);
+
+	switch (event) {
+	case SND_SOC_DAPM_POST_PMD:
+		switch (w->shift) {
+		case RT5659_PWR_I2S1_BIT:
+			snd_soc_update_bits(codec, RT5659_I2S1_SDP,
+				RT5659_I2S_MS_MASK , RT5659_I2S_MS_S);
+			break;
+		case RT5659_PWR_I2S2_BIT:
+			snd_soc_update_bits(codec, RT5659_I2S2_SDP,
+				RT5659_I2S_MS_MASK , RT5659_I2S_MS_S);
+			break;
+		case RT5659_PWR_I2S3_BIT:
+			snd_soc_update_bits(codec, RT5659_I2S3_SDP,
+				RT5659_I2S_MS_MASK , RT5659_I2S_MS_S);
+			break;
+		default:
+			break;
+		}
 		break;
 
 	default:
@@ -2714,8 +2773,8 @@ static const struct snd_soc_dapm_widget rt5659_dapm_widgets[] = {
 		RT5659_R_MUTE_SFT, 1, NULL, 0),
 
 	/* Digital Interface */
-	SND_SOC_DAPM_SUPPLY("I2S1", RT5659_PWR_DIG_1, RT5659_PWR_I2S1_BIT,
-		0, NULL, 0),
+	SND_SOC_DAPM_SUPPLY("I2S1", RT5659_PWR_DIG_1, RT5659_PWR_I2S1_BIT, 0,
+		rt5659_i2s_event, SND_SOC_DAPM_POST_PMD),
 	SND_SOC_DAPM_PGA("IF1 DAC1", SND_SOC_NOPM, 0, 0, NULL, 0),
 	SND_SOC_DAPM_PGA("IF1 DAC2", SND_SOC_NOPM, 0, 0, NULL, 0),
 	SND_SOC_DAPM_PGA("IF1 DAC1 L", SND_SOC_NOPM, 0, 0, NULL, 0),
@@ -2726,7 +2785,7 @@ static const struct snd_soc_dapm_widget rt5659_dapm_widgets[] = {
 	SND_SOC_DAPM_PGA("IF1 ADC L", SND_SOC_NOPM, 0, 0, NULL, 0),
 	SND_SOC_DAPM_PGA("IF1 ADC R", SND_SOC_NOPM, 0, 0, NULL, 0),
 	SND_SOC_DAPM_SUPPLY("I2S2", RT5659_PWR_DIG_1, RT5659_PWR_I2S2_BIT, 0,
-		NULL, 0),
+		rt5659_i2s_event, SND_SOC_DAPM_POST_PMD),
 	SND_SOC_DAPM_PGA("IF2 DAC", SND_SOC_NOPM, 0, 0, NULL, 0),
 	SND_SOC_DAPM_PGA("IF2 DAC L", SND_SOC_NOPM, 0, 0, NULL, 0),
 	SND_SOC_DAPM_PGA("IF2 DAC R", SND_SOC_NOPM, 0, 0, NULL, 0),
@@ -2734,7 +2793,7 @@ static const struct snd_soc_dapm_widget rt5659_dapm_widgets[] = {
 	SND_SOC_DAPM_PGA("IF2 ADC1", SND_SOC_NOPM, 0, 0, NULL, 0),
 	SND_SOC_DAPM_PGA("IF2 ADC2", SND_SOC_NOPM, 0, 0, NULL, 0),
 	SND_SOC_DAPM_SUPPLY("I2S3", RT5659_PWR_DIG_1, RT5659_PWR_I2S3_BIT, 0,
-		NULL, 0),
+		rt5659_i2s_event, SND_SOC_DAPM_POST_PMD),
 	SND_SOC_DAPM_PGA("IF3 DAC", SND_SOC_NOPM, 0, 0, NULL, 0),
 	SND_SOC_DAPM_PGA("IF3 DAC L", SND_SOC_NOPM, 0, 0, NULL, 0),
 	SND_SOC_DAPM_PGA("IF3 DAC R", SND_SOC_NOPM, 0, 0, NULL, 0),
@@ -3506,32 +3565,6 @@ static int rt5659_set_dai_sysclk(struct snd_soc_dai *dai,
 	return 0;
 }
 
-static int rt5659_hw_free(struct snd_pcm_substream *substream,
-	struct snd_soc_dai *dai)
-{
-	struct snd_soc_codec *codec = dai->codec;
-
-	switch (dai->id) {
-	case RT5659_AIF1:
-		snd_soc_update_bits(codec, RT5659_I2S1_SDP,
-			RT5659_I2S_MS_MASK , RT5659_I2S_MS_S);
-		break;
-	case RT5659_AIF2:
-		snd_soc_update_bits(codec, RT5659_I2S2_SDP,
-			RT5659_I2S_MS_MASK , RT5659_I2S_MS_S);
-		break;
-	case RT5659_AIF3:
-		snd_soc_update_bits(codec, RT5659_I2S3_SDP,
-			RT5659_I2S_MS_MASK , RT5659_I2S_MS_S);
-		break;
-	default:
-		dev_err(codec->dev, "Invalid dai->id: %d\n", dai->id);
-		return -EINVAL;
-	}
-
-	return 0;
-}
-
 /**
  * rt5659_pll_calc - Calcualte PLL M/N/K code.
  * @freq_in: external clock provided to codec.
@@ -3907,15 +3940,20 @@ static int rt5659_set_bias_level(struct snd_soc_codec *codec,
 	case SND_SOC_BIAS_PREPARE:
 		regmap_update_bits(rt5659->regmap, RT5659_DIG_MISC,
 			RT5659_DIG_GATE_CTRL, RT5659_DIG_GATE_CTRL);
-		regmap_update_bits(rt5659->regmap, RT5659_PWR_DIG_1, RT5659_PWR_LDO,
-			RT5659_PWR_LDO);
-		regmap_update_bits(rt5659->regmap, RT5659_PWR_ANLG_1, RT5659_PWR_MB |
-			RT5659_PWR_VREF1 | RT5659_PWR_VREF2, RT5659_PWR_MB |
-			RT5659_PWR_VREF1 | RT5659_PWR_VREF2);
-		msleep(20);
-		regmap_update_bits(rt5659->regmap, RT5659_PWR_ANLG_1,
-			RT5659_PWR_FV1 | RT5659_PWR_FV2,
-			RT5659_PWR_FV1 | RT5659_PWR_FV2);
+		break;
+
+	case SND_SOC_BIAS_STANDBY:
+		if (codec->dapm.bias_level == SND_SOC_BIAS_OFF) {
+			regmap_update_bits(rt5659->regmap, RT5659_PWR_DIG_1, RT5659_PWR_LDO,
+				RT5659_PWR_LDO);
+			regmap_update_bits(rt5659->regmap, RT5659_PWR_ANLG_1, RT5659_PWR_MB |
+				RT5659_PWR_VREF1 | RT5659_PWR_VREF2, RT5659_PWR_MB |
+				RT5659_PWR_VREF1 | RT5659_PWR_VREF2);
+			msleep(20);
+			regmap_update_bits(rt5659->regmap, RT5659_PWR_ANLG_1,
+				RT5659_PWR_FV1 | RT5659_PWR_FV2,
+				RT5659_PWR_FV1 | RT5659_PWR_FV2);
+		}
 		break;
 
 	case SND_SOC_BIAS_OFF:
@@ -4016,7 +4054,6 @@ static int rt5659_resume(struct snd_soc_codec *codec)
 
 struct snd_soc_dai_ops rt5659_aif_dai_ops = {
 	.hw_params = rt5659_hw_params,
-	.hw_free = rt5659_hw_free,
 	.set_fmt = rt5659_set_dai_fmt,
 	.set_sysclk = rt5659_set_dai_sysclk,
 	.set_tdm_slot = rt5659_set_tdm_slot,
