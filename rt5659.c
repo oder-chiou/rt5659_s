@@ -37,13 +37,15 @@ module_param(dmic_power_delay, int, 0644);
 
 static struct reg_default init_list[] = {
 	{RT5659_IN1_IN2,		0x4000}, /*Set BST1 to 36dB*/
-	{RT5659_IN3_IN4,		0x4040}, /*Set BST3/4 to 36dB*/
+	{RT5659_IN3_IN4,		0xc0c0}, /*Set BST3/4 to 36dB*/
 	/* Jack detect (JD3 to IRQ)*/
 	{RT5659_RC_CLK_CTRL,		0x9800},
 	{RT5659_GPIO_CTRL_1,		0x8000}, /*set GPIO1 to IRQ*/
+	{RT5659_GPIO_CTRL_2,		0x8000}, /*set GPIO to I2S3*/
 	{RT5659_PWR_ANLG_2,		0x0001}, /*JD3 power on */
 	{RT5659_IRQ_CTRL_2,		0x0040}, /*JD3 detection*/
 	{RT5659_EJD_CTRL_1,		0x30c0},
+	{RT5659_ASRC_8,			0x0120},
 };
 #define RT5659_INIT_REG_LEN ARRAY_SIZE(init_list)
 
