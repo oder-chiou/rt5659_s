@@ -1168,6 +1168,18 @@ static const char * const rt5659_data_select[] = {
 	"L/R", "R/L", "L/L", "R/R"
 };
 
+static const SOC_ENUM_SINGLE_DECL(rt5659_if1_01_adc_enum,
+	RT5659_TDM_CTRL_2, 14, rt5659_data_select);
+
+static const SOC_ENUM_SINGLE_DECL(rt5659_if1_23_adc_enum,
+	RT5659_TDM_CTRL_2, 12, rt5659_data_select);
+
+static const SOC_ENUM_SINGLE_DECL(rt5659_if1_45_adc_enum,
+	RT5659_TDM_CTRL_2, 10, rt5659_data_select);
+
+static const SOC_ENUM_SINGLE_DECL(rt5659_if1_67_adc_enum,
+	RT5659_TDM_CTRL_2, 8, rt5659_data_select);
+
 static const SOC_ENUM_SINGLE_DECL(rt5659_if2_dac_enum,
 	RT5659_DIG_INF23_DATA, RT5659_IF2_DAC_SEL_SFT, rt5659_data_select);
 
@@ -1552,6 +1564,15 @@ static const struct snd_kcontrol_new rt5659_snd_controls[] = {
 	SOC_DOUBLE_TLV("STO2 ADC Boost Gain Volume", RT5659_STO2_BOOST,
 		RT5659_STO2_ADC_L_BST_SFT, RT5659_STO2_ADC_R_BST_SFT,
 		3, 0, adc_bst_tlv),
+
+	SOC_ENUM("ADC IF1 0/1 Data Switch", rt5659_if1_01_adc_enum),
+	SOC_ENUM("ADC IF1 2/3 Data Switch", rt5659_if1_23_adc_enum),
+	SOC_ENUM("ADC IF1 4/5 Data Switch", rt5659_if1_45_adc_enum),
+	SOC_ENUM("ADC IF1 6/7 Data Switch", rt5659_if1_67_adc_enum),
+	SOC_SINGLE("DAC IF1 DAC1 L Data Switch", RT5659_TDM_CTRL_4, 12, 7, 0),
+	SOC_SINGLE("DAC IF1 DAC1 R Data Switch", RT5659_TDM_CTRL_4, 8, 7, 0),
+	SOC_SINGLE("DAC IF1 DAC2 L Data Switch", RT5659_TDM_CTRL_4, 4, 7, 0),
+	SOC_SINGLE("DAC IF1 DAC2 R Data Switch", RT5659_TDM_CTRL_4, 0, 7, 0),
 
 	SOC_ENUM("ADC IF2 Data Switch", rt5659_if2_adc_enum),
 	SOC_ENUM("DAC IF2 Data Switch", rt5659_if2_dac_enum),
