@@ -23,6 +23,12 @@
 	<ctl name="Stereo1 ADC MIXR ADC2 Switch" value="0"/>
 	<ctl name="Mono ADC MIXL ADC1 Switch" value="0"/>
 	<ctl name="Mono ADC MIXR ADC1 Switch" value="0"/>
+	<ctl name="DA STO Clk Sel" value="clk_sysy_div_out"/>
+	<ctl name="DA MONOL Clk Sel" value="clk_sysy_div_out"/>
+	<ctl name="DA MONOR Clk Sel" value="clk_sysy_div_out"/>
+	<ctl name="AD STO1 Clk Sel" value="clk_sysy_div_out"/>
+	<ctl name="AD MONOL Clk Sel" value="clk_sysy_div_out"/>
+	<ctl name="AD MONOR Clk Sel" value="clk_sysy_div_out"/>
 
 	<!-- Playback SPO -->
 	<ctl name="DAC L1 Mux" value="IF1 DAC1"/>
@@ -75,11 +81,14 @@
 	<ctl name="Mono ADC R1 Mux" value="ADC"/>
 	<ctl name="Mono ADC MIXL ADC1 Switch" value="1"/>
 	<ctl name="Mono ADC MIXR ADC1 Switch" value="1"/>
+	<ctl name="AD MONOL Clk Sel" value="clk_i2s2_track"/>
+	<ctl name="AD MONOR Clk Sel" value="clk_i2s2_track"/>
 	<!-- RCV -->
 	<ctl name="DAC L2 Mux" value="IF2 DAC"/>
 	<ctl name="Mono DAC MIXL DAC L2 Switch" value="1"/>
 	<ctl name="Mono MIX DAC L2 Switch" value="1"/>
 	<ctl name="Mono Playback Switch" value="1"/>
+	<ctl name="DA MONOL Clk Sel" value="clk_i2s2_track"/>
 		<!-- System -->
 		<ctl name="DAC L1 Mux" value="IF1 DAC1"/>
 		<ctl name="DAC R1 Mux" value="IF1 DAC1"/>
@@ -119,12 +128,15 @@
 	<ctl name="Mono ADC R1 Mux" value="ADC"/>
 	<ctl name="Mono ADC MIXL ADC1 Switch" value="1"/>
 	<ctl name="Mono ADC MIXR ADC1 Switch" value="1"/>
+	<ctl name="AD MONOL Clk Sel" value="clk_i2s2_track"/>
+	<ctl name="AD MONOR Clk Sel" value="clk_i2s2_track"/>
 	<!-- HPO -->
 	<ctl name="DAC L2 Mux" value="IF2 DAC"/>
 	<ctl name="Stereo DAC MIXL DAC L2 Switch" value="1"/>
 	<ctl name="Stereo DAC MIXR DAC L2 Switch" value="1"/>
 	<ctl name="HPO L Playback Switch" value="1"/>
 	<ctl name="HPO R Playback Switch" value="1"/>
+	<ctl name="DA MONOL Clk Sel" value="clk_i2s2_track"/>
 		<!-- System -->
 		<ctl name="DAC L1 Mux" value="IF1 DAC1"/>
 		<ctl name="DAC R1 Mux" value="IF1 DAC1"/>
@@ -164,6 +176,8 @@
 	<ctl name="Mono ADC R1 Mux" value="ADC"/>
 	<ctl name="Mono ADC MIXL ADC1 Switch" value="1"/>
 	<ctl name="Mono ADC MIXR ADC1 Switch" value="1"/>
+	<ctl name="AD MONOL Clk Sel" value="clk_i2s2_track"/>
+	<ctl name="AD MONOR Clk Sel" value="clk_i2s2_track"/>
 	<!-- SPO -->
 	<ctl name="DAC L2 Mux" value="IF2 DAC"/>
 	<ctl name="Mono DAC MIXL DAC L2 Switch" value="1"/>
@@ -175,6 +189,7 @@
 	<ctl name="SPO L MIX SPKVOL L Switch" value="1"/>
 	<ctl name="SPO R MIX SPKVOL R Switch" value="1"/>
 	<ctl name="SPO Playback Switch" value="1"/>
+	<ctl name="DA MONOL Clk Sel" value="clk_i2s2_track"/>
 		<!-- System -->
 		<ctl name="DAC L1 Mux" value="IF1 DAC1"/>
 		<ctl name="DAC R1 Mux" value="IF1 DAC1"/>
@@ -214,12 +229,15 @@
 	<ctl name="Mono ADC R1 Mux" value="ADC"/>
 	<ctl name="Mono ADC MIXL ADC1 Switch" value="1"/>
 	<ctl name="Mono ADC MIXR ADC1 Switch" value="1"/>
+	<ctl name="AD MONOL Clk Sel" value="clk_i2s2_track"/>
+	<ctl name="AD MONOR Clk Sel" value="clk_i2s2_track"/>
 	<!-- HPO -->
 	<ctl name="DAC L2 Mux" value="IF2 DAC"/>
 	<ctl name="Stereo DAC MIXL DAC L2 Switch" value="1"/>
 	<ctl name="Stereo DAC MIXR DAC L2 Switch" value="1"/>
 	<ctl name="HPO L Playback Switch" value="1"/>
 	<ctl name="HPO R Playback Switch" value="1"/>
+	<ctl name="DA MONOL Clk Sel" value="clk_i2s2_track"/>
 		<!-- System -->
 		<ctl name="DAC L1 Mux" value="IF1 DAC1"/>
 		<ctl name="DAC R1 Mux" value="IF1 DAC1"/>
@@ -249,6 +267,34 @@
 		<ctl name="Stereo1 ADC MIXL ADC1 Switch" value="1"/>
 		<ctl name="Stereo1 ADC MIXR ADC1 Switch" value="1"/>
 
+	<!-- Bluetooth -->
+	<!-- AP to BT -->
+	<ctl name="DAC L1 Mux" value="IF1 DAC1"/>
+	<ctl name="DAC R1 Mux" value="IF1 DAC1"/>
+	<ctl name="DAC1 MIXL DAC1 Switch" value="1"/>
+	<ctl name="DAC1 MIXR DAC1 Switch" value="1"/>
+	<ctl name="Mono DAC MIXL DAC L1 Switch" value="1"/>
+	<ctl name="Mono DAC MIXR DAC R1 Switch" value="1"/>
+	<ctl name="Mono ADC L1 Mux" value="Mono DAC MIXL"/>
+	<ctl name="Mono ADC R1 Mux" value="Mono DAC MIXR"/>
+	<ctl name="Mono ADC MIXL ADC1 Switch" value="1"/>
+	<ctl name="Mono ADC MIXR ADC1 Switch" value="1"/>
+	<ctl name="IF3 ADC Mux" value="IF_ADC2"/>
+	<ctl name="AD MONOL Clk Sel" value="clk_i2s3_track"/>
+	<ctl name="AD MONOR Clk Sel" value="clk_i2s3_track"/>
+	<!-- BT to AP -->
+	<ctl name="DAC L2 Mux" value="IF3 DAC"/>
+	<ctl name="DAC R2 Mux" value="IF3 DAC"/>
+	<ctl name="Stereo DAC MIXL DAC L2 Switch" value="1"/>
+	<ctl name="Stereo DAC MIXR DAC R2 Switch" value="1"/>
+	<ctl name="DAC MIXL Mux" value="Stereo DAC Mixer"/>
+	<ctl name="DAC MIXR Mux" value="Stereo DAC Mixer"/>
+	<ctl name="Stereo1 ADC2 Source" value="DAC MIX"/>
+	<ctl name="Stereo1 ADC MIXL ADC2 Switch" value="1"/>
+	<ctl name="Stereo1 ADC MIXR ADC2 Switch" value="1"/>
+	<ctl name="DA MONOL Clk Sel" value="clk_i2s3_track"/>
+	<ctl name="DA MONOR Clk Sel" value="clk_i2s3_track"/>
+
 	<!-- VoiceCall Bluetooth -->
 	<!-- CP to BT -->
 	<ctl name="DAC L2 Mux" value="IF2 DAC"/>
@@ -257,6 +303,8 @@
 	<ctl name="Mono ADC MIXL ADC1 Switch" value="1"/>
 	<ctl name="IF3 ADC Mux" value="IF_ADC2"/>
 	<ctl name="ADC IF3 Data Switch" value="L/L"/>
+	<ctl name="DA MONOL Clk Sel" value="clk_i2s2_track"/>
+	<ctl name="AD MONOL Clk Sel" value="clk_i2s3_track"/>
 		<!-- System -->
 		<ctl name="DAC L1 Mux" value="IF1 DAC1"/>
 		<ctl name="DAC R1 Mux" value="IF1 DAC1"/>
@@ -274,6 +322,8 @@
 	<ctl name="Mono ADC R1 Mux" value="Mono DAC MIXR"/>
 	<ctl name="Mono ADC MIXR ADC1 Switch" value="1"/>
 	<ctl name="ADC IF2 Data Switch" value="R/R"/>
+	<ctl name="DA MONOR Clk Sel" value="clk_i2s3_track"/>
+	<ctl name="AD MONOR Clk Sel" value="clk_i2s2_track"/>
 	<!-- Record -->
 		<!-- System -->
 		<ctl name="DAC L1 Mux" value="IF1 DAC1"/>
