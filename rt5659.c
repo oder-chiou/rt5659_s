@@ -39,13 +39,15 @@ static struct reg_default init_list[] = {
 	{RT5659_IN1_IN2,		0x4000}, /*Set BST1 to 36dB*/
 	{RT5659_IN3_IN4,		0xc0c0}, /*Set BST3/4 to 36dB*/
 	/* Jack detect (JD3 to IRQ)*/
-	{RT5659_RC_CLK_CTRL,		0x9800},
+	{RT5659_RC_CLK_CTRL,		0x9000},
 	{RT5659_GPIO_CTRL_1,		0x8000}, /*set GPIO1 to IRQ*/
 	{RT5659_GPIO_CTRL_2,		0x8000}, /*set GPIO to I2S3*/
 	{RT5659_PWR_ANLG_2,		0x0001}, /*JD3 power on */
 	{RT5659_IRQ_CTRL_2,		0x0040}, /*JD3 detection*/
-	{RT5659_EJD_CTRL_1,		0x30c0},
+	{RT5659_EJD_CTRL_1,		0x70c0},
 	{RT5659_ASRC_8,			0x0120},
+	{RT5659_4BTN_IL_CMD_1,		0x000b},
+	{RT5659_IL_CMD_3,		0xa324},
 };
 #define RT5659_INIT_REG_LEN ARRAY_SIZE(init_list)
 
@@ -1426,21 +1428,41 @@ int rt5659_get_jack_type(struct snd_soc_codec *codec, unsigned long action)
 		snd_soc_dapm_force_enable_pin(&codec->dapm, "MICBIAS1");
 		snd_soc_dapm_sync(&codec->dapm);
 
-		regmap_update_bits(rt5659->regmap, RT5659_PWR_ANLG_1, 0xa200, 0xa200);	
-		regmap_update_bits(rt5659->regmap, RT5659_PWR_ANLG_2, 0x0801, 0x0801);
+		regmap_update_bits(rt5659->regmap, RT5659_PWR_ANLG_1, 0xa200,
+			0xa200);
+		regmap_update_bits(rt5659->regmap, RT5659_PWR_ANLG_2, 0x0801,
+			0x0801);
+		regmap_write(rt5659->regmap, RT5659_RC_CLK_CTRL, 0x1100);
 
 		msleep(100);
 		regmap_read(rt5659->regmap, RT5659_GPIO_STA, &value);
-		if (value & 0x4)
+		regmap_write(rt5659->regmap, RT5659_RC_CLK_CTRL, 0x9000);
+		if (value & 0x4) {
+			snd_soc_dapm_force_enable_pin(&codec->dapm, "Mic Det Power");
+			snd_soc_dapm_sync(&codec->dapm);
+
+			snd_soc_update_bits(codec, RT5659_PWR_VOL,
+				RT5659_PWR_MIC_DET, RT5659_PWR_MIC_DET);
+
+			snd_soc_update_bits(codec, RT5659_4BTN_IL_CMD_2, 0x8000, 0x8000);
+			snd_soc_update_bits(codec, RT5659_4BTN_IL_CMD_1, 0xfff0, 0xfff0);
+			snd_soc_update_bits(codec, RT5659_IRQ_CTRL_2, 0x8, 0x8);
+
 			return 1;
+		}
 
 		snd_soc_dapm_disable_pin(&codec->dapm, "MICBIAS1");
 		snd_soc_dapm_sync(&codec->dapm);
+
 		return 2;
 	}
 
 	snd_soc_dapm_disable_pin(&codec->dapm, "MICBIAS1");
+	snd_soc_dapm_disable_pin(&codec->dapm, "Mic Det Power");
 	snd_soc_dapm_sync(&codec->dapm);
+
+	snd_soc_update_bits(codec, RT5659_IRQ_CTRL_2, 0x8, 0x0);
+	snd_soc_update_bits(codec, RT5659_4BTN_IL_CMD_2, 0x8000, 0x0);
 
 	return 0;
 }
@@ -4077,6 +4099,7 @@ static int rt5659_suspend(struct snd_soc_codec *codec)
 
 	regcache_cache_only(rt5659->regmap, true);
 	regcache_mark_dirty(rt5659->regmap);
+
 	return 0;
 }
 
