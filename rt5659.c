@@ -4238,6 +4238,9 @@ static int rt5659_parse_dt(struct rt5659_priv *rt5659, struct device_node *np)
 	of_property_read_u32(np, "realtek,dmic2_data_pin",
 		&rt5659->pdata.dmic2_data_pin);
 
+	of_property_read_u32(np, "realtek,push_button_range_def",
+		&rt5659->pdata.push_button_range_def);
+
 	return 0;
 }
 
@@ -4575,6 +4578,10 @@ static int rt5659_i2c_probe(struct i2c_client *i2c,
 			RT5659_DMIC_1_DP_MASK | RT5659_DMIC_2_DP_MASK,
 			RT5659_DMIC_1_DP_IN2N | RT5659_DMIC_2_DP_IN2P);
 	}
+
+	if (rt5659->pdata.push_button_range_def)
+		regmap_write(rt5659->regmap, RT5659_IL_CMD_3,
+			rt5659->pdata.push_button_range_def);
 
 	return snd_soc_register_codec(&i2c->dev, &soc_codec_dev_rt5659,
 			rt5659_dai, ARRAY_SIZE(rt5659_dai));

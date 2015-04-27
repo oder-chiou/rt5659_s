@@ -34,6 +34,8 @@ struct rt5659_platform_data {
 
 	enum rt5659_dmic1_data_pin dmic1_data_pin;
 	enum rt5659_dmic2_data_pin dmic2_data_pin;
+
+	unsigned int push_button_range_def;
 };
 
 #endif
