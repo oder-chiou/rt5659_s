@@ -3926,7 +3926,7 @@ static ssize_t rt5659_codec_adb_store(struct device *dev,
 	int i = 2, j = 0;
 
 	if (buf[0] == 'R' || buf[0] == 'r') {
-		while (j < 0x100 && i < count) {
+		while (j <= 0x100 && i < count) {
 			rt5659->adb_reg_addr[j] = 0;
 			value = 0;
 			for ( ; i < count; i++) {
@@ -3946,7 +3946,7 @@ static ssize_t rt5659_codec_adb_store(struct device *dev,
 		}
 		rt5659->adb_reg_num = j;
 	} else if (buf[0] == 'W' || buf[0] == 'w') {
-		while (j < 0x100 && i < count) {
+		while (j <= 0x100 && i < count) {
 			/* Get address */
 			rt5659->adb_reg_addr[j] = 0;
 			value = 0;

@@ -1776,7 +1776,7 @@ struct rt5659_priv {
 
 	unsigned int adb_reg_addr[0x100];
 	unsigned int adb_reg_value[0x100];
-	unsigned char adb_reg_num;
+	unsigned short adb_reg_num;
 
 };
 
