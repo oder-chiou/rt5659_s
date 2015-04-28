@@ -47,7 +47,6 @@ static struct reg_default init_list[] = {
 	{RT5659_EJD_CTRL_1,		0x70c0},
 	{RT5659_ASRC_8,			0x0120},
 	{RT5659_4BTN_IL_CMD_1,		0x000b},
-	{RT5659_IL_CMD_3,		0xa324},
 };
 #define RT5659_INIT_REG_LEN ARRAY_SIZE(init_list)
 
