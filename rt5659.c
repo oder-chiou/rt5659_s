@@ -4240,21 +4240,11 @@ static int rt5659_remove(struct snd_soc_codec *codec)
 #ifdef CONFIG_PM
 static int rt5659_suspend(struct snd_soc_codec *codec)
 {
-	struct rt5659_priv *rt5659 = snd_soc_codec_get_drvdata(codec);
-
-	regcache_cache_only(rt5659->regmap, true);
-	regcache_mark_dirty(rt5659->regmap);
-
 	return 0;
 }
 
 static int rt5659_resume(struct snd_soc_codec *codec)
 {
-	struct rt5659_priv *rt5659 = snd_soc_codec_get_drvdata(codec);
-
-	regcache_cache_only(rt5659->regmap, false);
-	regcache_sync(rt5659->regmap);
-
 	return 0;
 }
 #else
