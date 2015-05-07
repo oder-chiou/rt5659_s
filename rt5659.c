@@ -1469,6 +1469,106 @@ int rt5659_get_jack_type(struct snd_soc_codec *codec, unsigned long action)
 }
 EXPORT_SYMBOL(rt5659_get_jack_type);
 
+static int rt5659_imp_detect(struct snd_soc_codec *codec)
+{
+	struct rt5659_priv *rt5659 = snd_soc_codec_get_drvdata(codec);
+	unsigned int reg05, reg06, reg02, reg91, reg61, reg62, reg63, reg65;
+	unsigned int reg73, reg8e, regfa, reg80, reg81, reg82, i;
+
+	if (rt5659->do_impedance_sensing) {
+		/* Read current settings */
+		reg05 = snd_soc_read(codec, RT5659_HPL_GAIN);
+		reg06 = snd_soc_read(codec, RT5659_HPR_GAIN);
+		reg02 = snd_soc_read(codec, RT5659_HP_VOL);
+		reg91 = snd_soc_read(codec, RT5659_HP_CHARGE_PUMP_1);
+		reg61 = snd_soc_read(codec, RT5659_PWR_DIG_1);
+		reg62 = snd_soc_read(codec, RT5659_PWR_DIG_2);
+		reg63 = snd_soc_read(codec, RT5659_PWR_ANLG_1);
+		reg65 = snd_soc_read(codec, RT5659_PWR_ANLG_3);
+		reg73 = snd_soc_read(codec, RT5659_ADDA_CLK_1);
+		reg8e = snd_soc_read(codec, RT5659_DEPOP_1);
+		regfa = snd_soc_read(codec, RT5659_DIG_MISC);
+		reg80 = snd_soc_read(codec, RT5659_GLB_CLK);
+		reg81 = snd_soc_read(codec, RT5659_PLL_CTRL_1);
+		reg82 = snd_soc_read(codec, RT5659_PLL_CTRL_2);
+
+		/* Write settings */
+		snd_soc_write(codec, RT5659_HP_LOGIC_CTRL_1, 0x2700);
+		snd_soc_write(codec, RT5659_HP_LOGIC_CTRL_2, 0x0001);
+		snd_soc_write(codec, RT5659_DEPOP_1, 0x0000);
+		snd_soc_write(codec, RT5659_PWR_DIG_1, 0x0000);
+		snd_soc_update_bits(codec, RT5659_PWR_ANLG_1, 0xf200, 0x0000);
+		snd_soc_write(codec, RT5659_GLB_CLK, 0x6000);
+		snd_soc_write(codec, RT5659_PLL_CTRL_1, 0x0f00);
+		snd_soc_write(codec, RT5659_PLL_CTRL_2, 0x5000);
+		snd_soc_write(codec, RT5659_MICBIAS_2, 0x0280);
+		snd_soc_write(codec, RT5659_HPL_GAIN, 0x000f);
+		snd_soc_write(codec, RT5659_HPR_GAIN, 0x000f);
+		snd_soc_write(codec, RT5659_HP_VOL, 0x0000);
+		snd_soc_write(codec, RT5659_STO_DRE_CTRL_1, 0x0ec0);
+		snd_soc_write(codec, RT5659_HP_CHARGE_PUMP_1, 0x0c16);
+		snd_soc_write(codec, RT5659_CAL_REC, 0x0505);
+		snd_soc_update_bits(codec, RT5659_PWR_ANLG_1, 0xf200, 0xa200);
+		msleep(20);
+		snd_soc_update_bits(codec, RT5659_PWR_ANLG_1, 0xf200, 0xf200);
+		snd_soc_update_bits(codec, RT5659_PWR_DIG_1, 0x0080, 0x0080);
+		snd_soc_write(codec, RT5659_DEPOP_1, 0x0009);
+		snd_soc_update_bits(codec, RT5659_PWR_DIG_1, 0x0c00, 0x0c00);
+		snd_soc_write(codec, RT5659_HP_CHARGE_PUMP_1, 0x021e);
+		snd_soc_update_bits(codec, RT5659_PWR_DIG_2, 0x4400, 0x4400);
+		snd_soc_update_bits(codec, RT5659_PWR_ANLG_3, 0x01c0, 0x01c0);
+		snd_soc_write(codec, RT5659_ADDA_CLK_1, 0x0000);
+		snd_soc_update_bits(codec, RT5659_DEPOP_1, 0x0010, 0x0010);
+		snd_soc_write(codec, RT5659_SINE_GEN_CTRL_2, 0x8000);
+		snd_soc_write(codec, RT5659_DIG_MISC, 0x0000);
+		snd_soc_write(codec, RT5659_CALIB_ADC_CTRL, 0x3c05);
+		snd_soc_write(codec, RT5659_HP_IMP_SENS_CTRL_1, 0x004d);
+		snd_soc_write(codec, RT5659_HP_CALIB_CTRL_7, 0x0000);
+		snd_soc_write(codec, RT5659_IRQ_CTRL_3, 0x0004);
+		msleep(100);
+		snd_soc_write(codec, RT5659_HP_IMP_SENS_CTRL_1, 0x804d);
+
+		for (i = 0; i < 50; i++) {
+			msleep(10);
+
+			if (snd_soc_read(codec, RT5659_INT_ST_1) & 0x2) {
+				rt5659->impedance_value =
+					snd_soc_read(codec, RT5659_HP_IMP_SENS_CTRL_3);
+				break;
+			}
+		}
+
+		/* Recovery to currect settings */
+		snd_soc_write(codec, RT5659_INT_ST_1, 0x0);
+		snd_soc_write(codec, RT5659_HP_IMP_SENS_CTRL_1, 0x004d);
+		snd_soc_write(codec, RT5659_STO_DRE_CTRL_1, 0x8ec0);
+		snd_soc_write(codec, RT5659_CAL_REC, 0x0808);
+		snd_soc_write(codec, RT5659_MICBIAS_2, 0x0080);
+		snd_soc_write(codec, RT5659_CALIB_ADC_CTRL, 0x2005);
+		snd_soc_write(codec, RT5659_SINE_GEN_CTRL_2, 0x0000);
+		snd_soc_write(codec, RT5659_HPL_GAIN, reg05);
+		snd_soc_write(codec, RT5659_HPR_GAIN, reg06);
+		snd_soc_write(codec, RT5659_HP_VOL, reg02);
+		snd_soc_write(codec, RT5659_HP_CHARGE_PUMP_1, reg91);
+		snd_soc_write(codec, RT5659_PWR_DIG_1, reg61);
+		snd_soc_write(codec, RT5659_PWR_DIG_2, reg62);
+		snd_soc_write(codec, RT5659_PWR_ANLG_1, reg63);
+		snd_soc_write(codec, RT5659_PWR_ANLG_3, reg65);
+		snd_soc_write(codec, RT5659_ADDA_CLK_1, reg73);
+		snd_soc_write(codec, RT5659_DEPOP_1, reg8e);
+		snd_soc_write(codec, RT5659_DIG_MISC, regfa);
+		snd_soc_write(codec, RT5659_GLB_CLK, reg80);
+		snd_soc_write(codec, RT5659_PLL_CTRL_1, reg81);
+		snd_soc_write(codec, RT5659_PLL_CTRL_2, reg82);
+		snd_soc_write(codec, RT5659_HP_LOGIC_CTRL_1, 0x0000);
+		snd_soc_write(codec, RT5659_HP_LOGIC_CTRL_2, 0x0000);
+
+		rt5659->do_impedance_sensing = false;
+	}
+
+	return 0;
+}
+
 static const char *rt5659_push_btn_mode[] = {
 	"Disable", "Read"
 };
@@ -1701,9 +1801,15 @@ static int rt5659_charge_pump_event(struct snd_soc_dapm_widget *w,
 
 	switch (event) {
 	case SND_SOC_DAPM_PRE_PMU:
+		rt5659_imp_detect(codec);
 		/* Depop */
 		snd_soc_write(codec, RT5659_DEPOP_1, 0x0009);
 		break;
+
+	case SND_SOC_DAPM_POST_PMD:
+		snd_soc_write(codec, RT5659_HP_CHARGE_PUMP_1, 0x0c16);
+		break;
+
 	default:
 		return 0;
 	}
@@ -2605,6 +2711,7 @@ static int rt5659_hp_event(struct snd_soc_dapm_widget *w,
 
 	switch (event) {
 	case SND_SOC_DAPM_POST_PMU:
+		snd_soc_write(codec,RT5659_HP_CHARGE_PUMP_1, 0x0e1e);
 		snd_soc_update_bits(codec, RT5659_DEPOP_1, 0x0010, 0x0010);
 		break;
 
@@ -3131,7 +3238,8 @@ static const struct snd_soc_dapm_widget rt5659_dapm_widgets[] = {
 	SND_SOC_DAPM_PGA("LOUT Amp", SND_SOC_NOPM, 0, 0, NULL, 0),
 
 	SND_SOC_DAPM_SUPPLY("Charge Pump", SND_SOC_NOPM, 0, 0,
-		rt5659_charge_pump_event, SND_SOC_DAPM_PRE_PMU),
+		rt5659_charge_pump_event, SND_SOC_DAPM_PRE_PMU |
+		SND_SOC_DAPM_POST_PMD),
 
 	SND_SOC_DAPM_SWITCH("SPO Playback", SND_SOC_NOPM, 0, 0, &spo_switch),
 	SND_SOC_DAPM_SWITCH("Mono Playback", SND_SOC_NOPM, 0, 0,
@@ -3669,6 +3777,21 @@ static int rt5659_hw_params(struct snd_pcm_substream *substream,
 	}
 
 	snd_soc_update_bits(codec, RT5659_ADDA_CLK_1, mask_clk, val_clk);
+
+	switch (rt5659->lrck[dai->id]) {
+	case 192000:
+		snd_soc_update_bits(codec, RT5659_ADDA_CLK_1,
+			RT5659_DAC_OSR_MASK, RT5659_DAC_OSR_32);
+		break;
+	case 96000:
+		snd_soc_update_bits(codec, RT5659_ADDA_CLK_1, 
+			RT5659_DAC_OSR_MASK, RT5659_DAC_OSR_64);
+		break;
+	default:
+		snd_soc_update_bits(codec, RT5659_ADDA_CLK_1,
+			RT5659_DAC_OSR_MASK, RT5659_DAC_OSR_128);
+		break;
+	}
 
 	return 0;
 }
@@ -4437,8 +4560,6 @@ void rt5659_calibrate(struct rt5659_priv *rt5659)
 		count++;
 	}
 
-	msleep(700);
-
 	/* Manual K Internal Path Offset */
 	regmap_write(rt5659->regmap, RT5659_HP_CALIB_CTRL_2, 0x2cc1);
 	regmap_write(rt5659->regmap, RT5659_HP_VOL, 0x0000);
@@ -4565,6 +4686,7 @@ void rt5659_calibrate(struct rt5659_priv *rt5659)
 	regmap_write(rt5659->regmap, RT5659_GLB_CLK, 0x0000);
 	regmap_write(rt5659->regmap, RT5659_MICBIAS_2, 0x0080);
 	regmap_write(rt5659->regmap, RT5659_HP_VOL, 0x8080);
+	regmap_write(rt5659->regmap, RT5659_HP_CHARGE_PUMP_1, 0x0c16);
 }
 
 static int rt5659_i2c_probe(struct i2c_client *i2c,

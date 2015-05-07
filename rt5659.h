@@ -1773,6 +1773,8 @@ struct rt5659_priv {
 	int dsp_rate;
 	int jack_type;
 	int dmic_en;
+	bool do_impedance_sensing;
+	unsigned int impedance_value;
 
 	unsigned int adb_reg_addr[0x100];
 	unsigned int adb_reg_value[0x100];
