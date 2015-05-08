@@ -1893,7 +1893,7 @@ static int rt5659_dmic_use_asrc(struct snd_soc_dapm_widget *source,
 	switch(source->shift) {
 	case RT5659_DMIC_STO1_ASRC_SFT:
 		asrc2 = snd_soc_read(source->codec, RT5659_ASRC_2);
-		asrc_setting = (asrc2 && RT5659_AD_STO1_T_MASK) >>
+		asrc_setting = (asrc2 & RT5659_AD_STO1_T_MASK) >>
 			RT5659_AD_STO1_T_SFT;
 		if ( asrc_setting >= 1 && asrc_setting <= 3)
 			return 1;
@@ -1901,7 +1901,7 @@ static int rt5659_dmic_use_asrc(struct snd_soc_dapm_widget *source,
 
 	case RT5659_DMIC_MONO_L_ASRC_SFT:
 		asrc3 = snd_soc_read(source->codec, RT5659_ASRC_3);
-		asrc_setting = (asrc3 && RT5659_AD_MONO_L_T_MASK) >>
+		asrc_setting = (asrc3 & RT5659_AD_MONO_L_T_MASK) >>
 			RT5659_AD_MONO_L_T_SFT;
 		if ( asrc_setting >= 1 && asrc_setting <= 3)
 			return 1;
@@ -1909,7 +1909,7 @@ static int rt5659_dmic_use_asrc(struct snd_soc_dapm_widget *source,
 
 	case RT5659_DMIC_MONO_R_ASRC_SFT:
 		asrc3 = snd_soc_read(source->codec, RT5659_ASRC_3);
-		asrc_setting = (asrc3 && RT5659_AD_MONO_R_T_MASK) >>
+		asrc_setting = (asrc3 & RT5659_AD_MONO_R_T_MASK) >>
 			RT5659_AD_MONO_R_T_SFT;
 		if ( asrc_setting >= 1 && asrc_setting <= 3)
 			return 1;
@@ -1934,25 +1934,25 @@ static int rt5659_i2s_use_asrc(struct snd_soc_dapm_widget *source,
 	switch(source->shift) {
 	case RT5659_I2S1_ASRC_SFT:
 		if (rt5659->sysclk > rt5659->lrck[RT5659_AIF1] * 384) {
-			if (((asrc2 && RT5659_DA_STO_T_MASK) >>
+			if (((asrc2 & RT5659_DA_STO_T_MASK) >>
 				RT5659_DA_STO_T_SFT) == 1)
 				return 1;
-			if (((asrc2 && RT5659_DA_MONO_L_T_MASK) >>
+			if (((asrc2 & RT5659_DA_MONO_L_T_MASK) >>
 				RT5659_DA_MONO_L_T_SFT) == 1)
 				return 1;
-			if (((asrc2 && RT5659_DA_MONO_R_T_MASK) >>
+			if (((asrc2 & RT5659_DA_MONO_R_T_MASK) >>
 				RT5659_DA_MONO_R_T_SFT) == 1)
 				return 1;
-			if (((asrc2 && RT5659_AD_STO1_T_MASK) >>
+			if (((asrc2 & RT5659_AD_STO1_T_MASK) >>
 				RT5659_AD_STO1_T_SFT) == 1)
 				return 1;
-			if (((asrc3 && RT5659_AD_STO2_T_MASK) >>
+			if (((asrc3 & RT5659_AD_STO2_T_MASK) >>
 				RT5659_AD_STO2_T_SFT) == 1)
 				return 1;
-			if (((asrc3 && RT5659_AD_MONO_L_T_MASK) >>
+			if (((asrc3 & RT5659_AD_MONO_L_T_MASK) >>
 				RT5659_AD_MONO_L_T_SFT) == 1)
 				return 1;
-			if (((asrc3 && RT5659_AD_MONO_R_T_MASK) >>
+			if (((asrc3 & RT5659_AD_MONO_R_T_MASK) >>
 				RT5659_AD_MONO_R_T_SFT) == 1)
 				return 1;
 		}
@@ -1960,25 +1960,25 @@ static int rt5659_i2s_use_asrc(struct snd_soc_dapm_widget *source,
 
 	case RT5659_I2S2_ASRC_SFT:
 		if (rt5659->sysclk > rt5659->lrck[RT5659_AIF2] * 384) {
-			if (((asrc2 && RT5659_DA_STO_T_MASK) >>
+			if (((asrc2 & RT5659_DA_STO_T_MASK) >>
 				RT5659_DA_STO_T_SFT) == 2)
 				return 1;
-			if (((asrc2 && RT5659_DA_MONO_L_T_MASK) >>
+			if (((asrc2 & RT5659_DA_MONO_L_T_MASK) >>
 				RT5659_DA_MONO_L_T_SFT) == 2)
 				return 1;
-			if (((asrc2 && RT5659_DA_MONO_R_T_MASK) >>
+			if (((asrc2 & RT5659_DA_MONO_R_T_MASK) >>
 				RT5659_DA_MONO_R_T_SFT) == 2)
 				return 1;
-			if (((asrc2 && RT5659_AD_STO1_T_MASK) >>
+			if (((asrc2 & RT5659_AD_STO1_T_MASK) >>
 				RT5659_AD_STO1_T_SFT) == 2)
 				return 1;
-			if (((asrc3 && RT5659_AD_STO2_T_MASK) >>
+			if (((asrc3 & RT5659_AD_STO2_T_MASK) >>
 				RT5659_AD_STO2_T_SFT) == 2)
 				return 1;
-			if (((asrc3 && RT5659_AD_MONO_L_T_MASK) >>
+			if (((asrc3 & RT5659_AD_MONO_L_T_MASK) >>
 				RT5659_AD_MONO_L_T_SFT) == 2)
 				return 1;
-			if (((asrc3 && RT5659_AD_MONO_R_T_MASK) >>
+			if (((asrc3 & RT5659_AD_MONO_R_T_MASK) >>
 				RT5659_AD_MONO_R_T_SFT) == 2)
 				return 1;
 		}
@@ -1986,25 +1986,25 @@ static int rt5659_i2s_use_asrc(struct snd_soc_dapm_widget *source,
 
 	case RT5659_I2S3_ASRC_SFT:
 		if (rt5659->sysclk > rt5659->lrck[RT5659_AIF3] * 384) {
-			if (((asrc2 && RT5659_DA_STO_T_MASK) >>
+			if (((asrc2 & RT5659_DA_STO_T_MASK) >>
 				RT5659_DA_STO_T_SFT) == 3)
 				return 1;
-			if (((asrc2 && RT5659_DA_MONO_L_T_MASK) >>
+			if (((asrc2 & RT5659_DA_MONO_L_T_MASK) >>
 				RT5659_DA_MONO_L_T_SFT) == 3)
 				return 1;
-			if (((asrc2 && RT5659_DA_MONO_R_T_MASK) >>
+			if (((asrc2 & RT5659_DA_MONO_R_T_MASK) >>
 				RT5659_DA_MONO_R_T_SFT) == 3)
 				return 1;
-			if (((asrc2 && RT5659_AD_STO1_T_MASK) >>
+			if (((asrc2 & RT5659_AD_STO1_T_MASK) >>
 				RT5659_AD_STO1_T_SFT) == 3)
 				return 1;
-			if (((asrc3 && RT5659_AD_STO2_T_MASK) >>
+			if (((asrc3 & RT5659_AD_STO2_T_MASK) >>
 				RT5659_AD_STO2_T_SFT) == 3)
 				return 1;
-			if (((asrc3 && RT5659_AD_MONO_L_T_MASK) >>
+			if (((asrc3 & RT5659_AD_MONO_L_T_MASK) >>
 				RT5659_AD_MONO_L_T_SFT) == 3)
 				return 1;
-			if (((asrc3 && RT5659_AD_MONO_R_T_MASK) >>
+			if (((asrc3 & RT5659_AD_MONO_R_T_MASK) >>
 				RT5659_AD_MONO_R_T_SFT) == 3)
 				return 1;
 		}
